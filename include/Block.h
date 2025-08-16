@@ -5,30 +5,31 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <iostream>
 #include <vector>
+#include <map>
 
 #include <Color.h>
 
-class Grid
+class Block
 {
 public:
-    int grid[20][10];
-
-    Grid(GLuint shaderProgram, glm::mat4 projection);
-    ~Grid();
-    void init();
+    Block();
+    Block(GLuint shaderProgram, glm::mat4 projection);
+    ~Block();
     void render();
+    
+    int id;
+    std::map<int, std::vector<glm::vec2>> cells;
 
 private:
-    static constexpr int numRows = 20;
-    static constexpr int numColumns = 10;
     static constexpr int cellSize = 45;
+    int rotationState;
 
-    std::vector<glm::vec4> colors;
-    GLuint VAO, VBO, EBO;
     GLuint shaderProgram;
+    GLuint VAO, VBO, EBO; 
+
     glm::mat4 projection;
 
     void drawRectangle(float x, float y, float width, float height, glm::vec4 color);
+    std::vector<glm::vec4> colors;
 };

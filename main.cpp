@@ -9,6 +9,7 @@
 #include <sstream>
 
 #include <Grid.h>
+#include <Blocks.h>
 
 int screenWidth = 450;
 int screenHeight = 900;
@@ -55,6 +56,8 @@ int main()
         return 1;
     }
 
+    glfwSwapInterval(1);
+
     glViewport(0, 0, screenWidth, screenHeight);
     projection = glm::ortho(0.0f, float(screenWidth), float(screenHeight), 0.0f, -1.0f, 1.0f);
     
@@ -63,7 +66,8 @@ int main()
     glClearColor(0.17f, 0.17f, 0.498f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    Grid grid = Grid(shaderProgram, projection); 
+    Grid grid = Grid(shaderProgram, projection);
+    TBlock block = TBlock(shaderProgram, projection);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -72,6 +76,7 @@ int main()
 
         glUseProgram(shaderProgram);
         grid.render();
+        block.render();
 
         glfwSwapBuffers(window);
     }

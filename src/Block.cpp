@@ -1,12 +1,16 @@
-#include <Grid.h>
+#include <Block.h>
 
-Grid::Grid(GLuint shaderProgram, glm::mat4 projection)
+Block::Block()
 {
-    init();
 
+}
+
+Block::Block(GLuint shaderProgram, glm::mat4 projection)
+{
     this->shaderProgram = shaderProgram;
     this->projection = projection;
     colors = getCellColor();
+    rotationState = 0;
 
     unsigned int indices[] = {
         0, 1, 2,
@@ -20,7 +24,6 @@ Grid::Grid(GLuint shaderProgram, glm::mat4 projection)
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8, nullptr, GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (void *)(0));
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -30,18 +33,14 @@ Grid::Grid(GLuint shaderProgram, glm::mat4 projection)
     glBindVertexArray(0);
 }
 
-void Grid::init()
+Block::~Block()
 {
-    for (int row = 0; row < numRows; ++row)
-    {
-        for (int column = 0; column < numColumns; ++column)
-        {
-            grid[row][column] = 0;
-        }
-    }
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
 }
 
-void Grid::drawRectangle(float x, float y, float width, float height, glm::vec4 color)
+void Block::drawRectangle(float x, float y, float width, float height, glm::vec4 color)
 {
     float vertices[] = {
         x, y,
@@ -59,26 +58,15 @@ void Grid::drawRectangle(float x, float y, float width, float height, glm::vec4 
     GLuint projectionLocation = glGetUniformLocation(shaderProgram, "uProjection");
     glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
 
-    GLuint colorLocation = glGetUniformLocation(shaderProgram, "aColor"); 
+    GLuint colorLocation = glGetUniformLocation(shaderProgram, "aColor");
     glUniform4fv(colorLocation, 1, glm::value_ptr(color));
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void Grid::render()
+void Block::render()
 {
-    for (int row = 0; row < numRows; ++row)
+    for (glm::vec2 &cell : cells[rotationState])
     {
-        for (int column = 0; column < numColumns; ++column)
-        {
-            int cellValue = grid[row][column];
-            drawRectangle(column * cellSize + 1, row * cellSize + 1, cellSize - 1, cellSize - 1, colors[cellValue]);
-        }
-    }            
-}
-
-Grid::~Grid()
-{
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+        drawRectangle(cell.r * cellSize + 1, cell.g * cellSize + 1, cellSize - 1, cellSize - 1, colors[id]);
+    }
 }
