@@ -12,7 +12,7 @@ class Grid
 public:
     int grid[20][10];
 
-    Grid(GLuint shaderProgram);
+    Grid(GLuint shaderProgram, glm::mat4 projection);
     ~Grid();
     void init();
     void render();
@@ -25,6 +25,8 @@ private:
     std::vector<glm::vec4> colors;
     GLuint colorLocation;
     GLuint VAO, VBO, EBO;
+    GLuint shaderProgram;
+    glm::mat4 projection;
 
     std::vector<glm::vec4> getCellColor();
     glm::vec4 toVec4(glm::vec4 color);

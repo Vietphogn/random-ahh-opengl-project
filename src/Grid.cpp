@@ -1,10 +1,12 @@
 #include <Grid.h>
 
-Grid::Grid(GLuint shaderProgram)
+Grid::Grid(GLuint shaderProgram, glm::mat4 projection)
 {
     init();
 
     colors = getCellColor();
+    this->shaderProgram = shaderProgram;
+    this->projection = projection;
     colorLocation = glGetUniformLocation(shaderProgram, "aColor"); 
 
     unsigned int indices[] = {
@@ -71,8 +73,13 @@ void Grid::drawRectangle(float x, float y, float width, float height, glm::vec4 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-    glUniform4fv(colorLocation, 1, glm::value_ptr(color));
 
+    glUseProgram(shaderProgram);
+
+    GLuint projectionLocation = glGetUniformLocation(shaderProgram, "uProjection");
+    glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
+
+    glUniform4fv(colorLocation, 1, glm::value_ptr(color));
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
@@ -83,7 +90,7 @@ void Grid::render()
         for (int column = 0; column < numColumns; ++column)
         {
             int cellValue = grid[row][column];
-            drawRectangle(row * cellSize + 1, column * cellSize + 1, cellSize - 1, cellSize - 1, colors[cellValue]);
+            drawRectangle(column * cellSize + 1, row * cellSize + 1, cellSize - 1, cellSize - 1, colors[cellValue]);
         }
     }            
 }

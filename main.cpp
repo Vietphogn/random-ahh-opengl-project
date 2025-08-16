@@ -63,7 +63,7 @@ int main()
     glClearColor(0.17f, 0.17f, 0.498f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    Grid grid = Grid(shaderProgram); 
+    Grid grid = Grid(shaderProgram, projection); 
 
     while (!glfwWindowShouldClose(window))
     {
