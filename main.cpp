@@ -8,8 +8,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <Grid.h>
-#include <Blocks.h>
+#include <Game.h>
 
 int screenWidth = 450;
 int screenHeight = 900;
@@ -66,17 +65,17 @@ int main()
     glClearColor(0.17f, 0.17f, 0.498f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    Grid grid = Grid(shaderProgram, projection);
-    TBlock block = TBlock(shaderProgram, projection);
+    Game game = Game(window, shaderProgram, projection);
 
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
+        game.update();
+
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
-        grid.render();
-        block.render();
+        game.render();
 
         glfwSwapBuffers(window);
     }

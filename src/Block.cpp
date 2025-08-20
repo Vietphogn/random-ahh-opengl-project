@@ -2,15 +2,18 @@
 
 Block::Block()
 {
-
+    
 }
 
 Block::Block(GLuint shaderProgram, glm::mat4 projection)
 {
     this->shaderProgram = shaderProgram;
     this->projection = projection;
+
     colors = getCellColor();
-    rotationState = 0;
+    rotationState = 1;
+    rowOffset = 0;
+    columnOffset = 0;
 
     unsigned int indices[] = {
         0, 1, 2,
@@ -63,10 +66,41 @@ void Block::drawRectangle(float x, float y, float width, float height, glm::vec4
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
+void Block::update()
+{
+}
+
 void Block::render()
 {
-    for (glm::vec2 &cell : cells[rotationState])
+    std::vector<glm::vec2> tiles = cells[rotationState];
+    for (glm::vec2 &tile : tiles)
     {
-        drawRectangle(cell.r * cellSize + 1, cell.g * cellSize + 1, cellSize - 1, cellSize - 1, colors[id]);
+        tile.r += rowOffset;
+        tile.g += columnOffset; 
+        drawRectangle(tile.r * cellSize + 1, tile.g * cellSize + 1, cellSize - 1, cellSize - 1, colors[id]);
     }
+}
+
+void Block::move(int rows, int columns)
+{
+    rowOffset += rows;
+    columnOffset += columns;
+}
+
+void Block::changeRotationState()
+{
+    rotationState = (rotationState + 1) % 4;
+}
+
+bool Block::isBlockOutside(Grid grid)
+{
+    std::vector<glm::vec2> tiles = cells[rotationState];
+    for (glm::vec2 tile : tiles)
+    {
+        if (grid.isCellOutside(tile.r + rowOffset, tile.g + columnOffset))
+        {
+            return true;
+        }
+    }
+    return false;
 }

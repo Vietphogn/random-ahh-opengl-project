@@ -9,6 +9,7 @@
 #include <map>
 
 #include <Color.h>
+#include <Grid.h>
 
 class Block
 {
@@ -16,20 +17,29 @@ public:
     Block();
     Block(GLuint shaderProgram, glm::mat4 projection);
     ~Block();
+
+    void move(int rows, int columns);
     void render();
+    void update();
+    void changeRotationState();
+    bool isBlockOutside(Grid grid);
     
+protected:
     int id;
     std::map<int, std::vector<glm::vec2>> cells;
 
 private:
     static constexpr int cellSize = 45;
+
     int rotationState;
+    int rowOffset, columnOffset;
 
     GLuint shaderProgram;
     GLuint VAO, VBO, EBO; 
 
     glm::mat4 projection;
 
-    void drawRectangle(float x, float y, float width, float height, glm::vec4 color);
     std::vector<glm::vec4> colors;
+
+    void drawRectangle(float x, float y, float width, float height, glm::vec4 color);
 };

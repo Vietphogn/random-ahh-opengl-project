@@ -1,5 +1,10 @@
 #include <Grid.h>
 
+Grid::Grid()
+{
+
+}
+
 Grid::Grid(GLuint shaderProgram, glm::mat4 projection)
 {
     init();
@@ -81,4 +86,9 @@ Grid::~Grid()
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
+}
+
+bool Grid::isCellOutside(int row, int column)
+{
+    return !(row >= 0 && row < numRows && column >= 0 && column < numColumns);
 }

@@ -15,10 +15,13 @@ class Grid
 public:
     int grid[20][10];
 
+    Grid();
     Grid(GLuint shaderProgram, glm::mat4 projection);
     ~Grid();
+
     void init();
     void render();
+    bool isCellOutside(int row, int column);
 
 private:
     static constexpr int numRows = 20;
