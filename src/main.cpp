@@ -7,6 +7,8 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <chrono>
+#include <thread>
 
 #include <Game.h>
 
@@ -55,8 +57,6 @@ int main()
         return 1;
     }
 
-    glfwSwapInterval(1);
-
     glViewport(0, 0, screenWidth, screenHeight);
     projection = glm::ortho(0.0f, float(screenWidth), float(screenHeight), 0.0f, -1.0f, 1.0f);
     
@@ -67,10 +67,24 @@ int main()
 
     Game game = Game(window, shaderProgram, projection);
 
+    const double targetFPS = 60.0f;
+    const double targetFrameTime = 1 / targetFPS;
+
+    float lastFrame = 0.0f;
+
     while (!glfwWindowShouldClose(window))
     {
+        auto frameStart = std::chrono::high_resolution_clock::now();
+
         glfwPollEvents();
-        game.update();
+
+        game.handleInput(window);
+
+        float currentFrame = glfwGetTime();
+        float deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        game.update(deltaTime);
 
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -78,6 +92,15 @@ int main()
         game.render();
 
         glfwSwapBuffers(window);
+
+        auto frameEnd = std::chrono::high_resolution_clock::now();        
+        std::chrono::duration<double> elapsed = frameEnd - frameStart;
+
+        double sleepTime = targetFrameTime - elapsed.count();
+        if (sleepTime > 0)
+        {
+            std::this_thread::sleep_for(std::chrono::duration<double>(sleepTime));
+        }
     }
 
     glfwDestroyWindow(window);

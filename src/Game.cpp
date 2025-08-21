@@ -20,6 +20,8 @@ Game::Game(GLFWwindow *window, GLuint shaderProgram, glm::mat4 projection) : gri
     currentBlock = getRandomBlock();
     nextBlock = getRandomBlock();
 
+    elapsedTime = 0.0f;
+
     glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
         if (instance)
         {
@@ -28,8 +30,16 @@ Game::Game(GLFWwindow *window, GLuint shaderProgram, glm::mat4 projection) : gri
     });
 }
 
-void Game::update()
+void Game::update(float deltaTime)
 {
+    elapsedTime += deltaTime;
+    
+    if (elapsedTime >= moveInterval)
+    {
+        elapsedTime = 0.0f;
+        moveDown();
+    }
+
     currentBlock.update();
 }
 
@@ -83,12 +93,24 @@ void Game::moveRight()
     }
 }
 
+void Game::lockBlock()
+{
+    std::vector<glm::vec2> tiles = currentBlock.getCellPositions();
+    for (glm::vec2 &tile : tiles)
+    {
+        grid.grid[int(tile.x)][int(tile.y)] = currentBlock.id;
+    }
+    currentBlock = nextBlock;
+    nextBlock = getRandomBlock();
+}
+
 void Game::moveDown()
 {
     currentBlock.move(0, 1);
     if (currentBlock.isBlockOutside(grid))
     {
         currentBlock.move(0, -1);
+        lockBlock();
     }
 }
 
@@ -102,21 +124,29 @@ void Game::keyCallback(GLFWwindow *window, int key, int scancode, int action, in
     {
         moveRight();
     }
-    if ((key == GLFW_KEY_DOWN || key == GLFW_KEY_S) && action == GLFW_PRESS)
-    {
-        moveDown();
-    }
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
     {
         rotateBlock();
+    }
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
+        glfwSetWindowShouldClose(window, true);
     }
 }
 
 void Game::rotateBlock()
 {
     currentBlock.rotate();
+    if (currentBlock.isBlockOutside(grid))
+    {
+        currentBlock.undoRotation();        
+    }
 }
 
 void Game::handleInput(GLFWwindow *window)
 {
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        moveDown();
+    }
 }

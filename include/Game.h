@@ -12,9 +12,13 @@ public:
 
     void handleInput(GLFWwindow *window);
     void render();
-    void update();
+    void update(float deltaTime);
 
 private:
+    const float moveInterval = 0.2f;
+
+    float elapsedTime;
+
     std::vector<Block> blocks;
     std::vector<Block> allBlocks;
 
@@ -32,5 +36,6 @@ private:
     void moveRight();
     void moveDown();
     void rotateBlock();
+    void lockBlock();
     void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
 };

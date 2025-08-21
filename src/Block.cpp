@@ -95,12 +95,30 @@ void Block::rotate()
 bool Block::isBlockOutside(const Grid &grid)
 {
     std::vector<glm::vec2> tiles = cells[rotationState];
-    for (glm::vec2 tile : tiles)
+    for (glm::vec2 &tile : tiles)
     {
-        if (grid.isCellOutside(tile.y + rowOffset, tile.y + columnOffset))
+        if (grid.isCellOutside(tile.y + rowOffset, tile.x + columnOffset))
         {
             return true;
         }
     }
     return false;
+}
+
+void Block::undoRotation()
+{
+    rotationState = (rotationState - 1) % 4;
+}
+
+std::vector<glm::vec2> Block::getCellPositions()
+{
+    std::vector<glm::vec2> tiles = cells[rotationState];
+
+    for (glm::vec2 &tile : tiles)
+    {
+        tile.y += rowOffset;
+        tile.x += columnOffset;
+    }
+
+    return tiles;
 }

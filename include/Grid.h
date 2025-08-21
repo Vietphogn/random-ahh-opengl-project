@@ -24,9 +24,9 @@ public:
     bool isCellOutside(int column, int row) const;
 
 private:
-    static constexpr int numRows = 20;
-    static constexpr int numColumns = 10;
-    static constexpr int cellSize = 45;
+    const int numRows = 20;
+    const int numColumns = 10;
+    const int cellSize = 45;
 
     std::vector<glm::vec4> colors;
     GLuint VAO, VBO, EBO;

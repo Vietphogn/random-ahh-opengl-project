@@ -14,6 +14,8 @@
 class Block
 {
 public:
+    int id;
+    
     Block();
     Block(GLuint shaderProgram, glm::mat4 projection);
     ~Block();
@@ -22,10 +24,11 @@ public:
     void render();
     void update();
     void rotate();
+    void undoRotation();
     bool isBlockOutside(const Grid &grid);
+    std::vector<glm::vec2> getCellPositions();
     
 protected:
-    int id;
     std::map<int, std::vector<glm::vec2>> cells;
 
 private:
