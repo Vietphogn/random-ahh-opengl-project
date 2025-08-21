@@ -31,5 +31,6 @@ private:
     void moveLeft();
     void moveRight();
     void moveDown();
+    void rotateBlock();
     void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
 };

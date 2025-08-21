@@ -106,6 +106,15 @@ void Game::keyCallback(GLFWwindow *window, int key, int scancode, int action, in
     {
         moveDown();
     }
+    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+    {
+        rotateBlock();
+    }
+}
+
+void Game::rotateBlock()
+{
+    currentBlock.rotate();
 }
 
 void Game::handleInput(GLFWwindow *window)

@@ -21,7 +21,7 @@ public:
     void move(int rows, int columns);
     void render();
     void update();
-    void changeRotationState();
+    void rotate();
     bool isBlockOutside(const Grid &grid);
     
 protected:

@@ -87,7 +87,7 @@ void Block::move(int rows, int columns)
     columnOffset += columns;
 }
 
-void Block::changeRotationState()
+void Block::rotate()
 {
     rotationState = (rotationState + 1) % 4;
 }
