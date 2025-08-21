@@ -75,9 +75,9 @@ void Block::render()
     std::vector<glm::vec2> tiles = cells[rotationState];
     for (glm::vec2 &tile : tiles)
     {
-        tile.r += rowOffset;
-        tile.g += columnOffset; 
-        drawRectangle(tile.r * cellSize + 1, tile.g * cellSize + 1, cellSize - 1, cellSize - 1, colors[id]);
+        tile.y += rowOffset;
+        tile.x += columnOffset; 
+        drawRectangle(tile.y * cellSize + 1, tile.x * cellSize + 1, cellSize - 1, cellSize - 1, colors[id]);
     }
 }
 
@@ -92,12 +92,12 @@ void Block::changeRotationState()
     rotationState = (rotationState + 1) % 4;
 }
 
-bool Block::isBlockOutside(Grid grid)
+bool Block::isBlockOutside(const Grid &grid)
 {
     std::vector<glm::vec2> tiles = cells[rotationState];
     for (glm::vec2 tile : tiles)
     {
-        if (grid.isCellOutside(tile.r + rowOffset, tile.g + columnOffset))
+        if (grid.isCellOutside(tile.y + rowOffset, tile.y + columnOffset))
         {
             return true;
         }

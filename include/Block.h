@@ -22,7 +22,7 @@ public:
     void render();
     void update();
     void changeRotationState();
-    bool isBlockOutside(Grid grid);
+    bool isBlockOutside(const Grid &grid);
     
 protected:
     int id;

@@ -88,7 +88,7 @@ Grid::~Grid()
     glDeleteBuffers(1, &EBO);
 }
 
-bool Grid::isCellOutside(int row, int column)
+bool Grid::isCellOutside(int column, int row) const
 {
     return !(row >= 0 && row < numRows && column >= 0 && column < numColumns);
 }

@@ -21,7 +21,7 @@ public:
 
     void init();
     void render();
-    bool isCellOutside(int row, int column);
+    bool isCellOutside(int column, int row) const;
 
 private:
     static constexpr int numRows = 20;

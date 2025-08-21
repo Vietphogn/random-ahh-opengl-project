@@ -68,28 +68,28 @@ void Game::render()
 void Game::moveLeft()
 {
     currentBlock.move(-1, 0);
-    /*if (currentBlock.isBlockOutside(grid))
+    if (currentBlock.isBlockOutside(grid))
     {
         currentBlock.move(1, 0);
-    }*/
+    }
 }
 
 void Game::moveRight()
 {
     currentBlock.move(1, 0);
-    /*if (currentBlock.isBlockOutside(grid))
+    if (currentBlock.isBlockOutside(grid))
     {
         currentBlock.move(-1, 0);
-    }*/
+    }
 }
 
 void Game::moveDown()
 {
     currentBlock.move(0, 1);
-    /*if (currentBlock.isBlockOutside(grid))
+    if (currentBlock.isBlockOutside(grid))
     {
         currentBlock.move(0, -1);
-    }*/
+    }
 }
 
 void Game::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
