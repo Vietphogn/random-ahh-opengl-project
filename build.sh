@@ -1,0 +1,1 @@
+g++ obj/*.o -o game -lglfw -ldl -lGL
