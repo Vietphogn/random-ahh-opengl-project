@@ -107,7 +107,7 @@ void Game::lockBlock()
 void Game::moveDown()
 {
     currentBlock.move(0, 1);
-    if (currentBlock.isBlockOutside(grid))
+    if (currentBlock.isBlockOutside(grid) || !blockFits())
     {
         currentBlock.move(0, -1);
         lockBlock();
@@ -149,4 +149,19 @@ void Game::handleInput(GLFWwindow *window)
     {
         moveDown();
     }
+}
+
+bool Game::blockFits()
+{
+    std::vector<glm::vec2> tiles = currentBlock.getCellPositions();
+
+    for (glm::vec2 &tile : tiles)
+    {
+        if (!grid.isCellEmpty(tile.x, tile.y))
+        {
+            return false;
+        }
+    }
+
+    return true;
 }

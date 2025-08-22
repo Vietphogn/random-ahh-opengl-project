@@ -22,6 +22,7 @@ public:
     void init();
     void render();
     bool isCellOutside(int column, int row) const;
+    bool isCellEmpty(int column, int row) const;
 
 private:
     const int numRows = 20;
