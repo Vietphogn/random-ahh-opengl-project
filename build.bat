@@ -1,0 +1,1 @@
+g++ bin/*.obj -o game.exe -Llib -lglfw3dll -lopengl32 -lgdi32 -mwindows
