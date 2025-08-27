@@ -79,10 +79,10 @@ void Block::render()
     }
 }
 
-void Block::move(int rows, int columns)
+void Block::move(int columns, int rows)
 {
-    rowOffset += columns;
-    columnOffset += rows;
+    rowOffset += rows;
+    columnOffset += columns;
 }
 
 void Block::rotate()
