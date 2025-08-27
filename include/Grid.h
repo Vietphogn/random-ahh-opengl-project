@@ -21,6 +21,7 @@ public:
 
     void init();
     void render();
+    void clearFullRows();
     bool isCellOutside(int column, int row) const;
     bool isCellEmpty(int column, int row) const;
 
@@ -34,5 +35,8 @@ private:
     GLuint shaderProgram;
     glm::mat4 projection;
 
+    bool isRowFull(int row) const;
     void drawRectangle(float x, float y, float width, float height, glm::vec4 color);
+    void clearRow(int row);
+    void moveRowDown(int row, int numRows);
 };

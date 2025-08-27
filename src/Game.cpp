@@ -102,6 +102,7 @@ void Game::lockBlock()
     }
     currentBlock = nextBlock;
     nextBlock = getRandomBlock();
+    grid.clearFullRows();
 }
 
 void Game::moveDown()

@@ -95,5 +95,55 @@ bool Grid::isCellOutside(int column, int row) const
 
 bool Grid::isCellEmpty(int row, int column) const
 {
+    if (row < 0)
+    {
+        return true;
+    }
     return grid[row][column] == 0;
+}
+
+bool Grid::isRowFull(int row) const
+{
+    for (int column = 0; column < numColumns; ++column)
+    {
+        if (grid[row][column] == 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+void Grid::clearRow(int row)
+{
+    for (int column = 0; column < numColumns; ++column)
+    {
+        grid[row][column] = 0;
+    }
+}
+
+void Grid::moveRowDown(int row, int numRows)
+{
+    for (int column = 0; column < numColumns; ++column)
+    {
+        grid[row + numRows][column] = grid[row][column];
+        grid[row][column] = 0;
+    }
+}
+
+void Grid::clearFullRows()
+{
+    int clearedRows = 0;
+    for (int row = numRows - 1; row >= 0; --row)
+    {
+        if (isRowFull(row))
+        {
+            clearRow(row);
+            ++clearedRows;
+        }
+        else if (clearedRows > 0)
+        {
+            moveRowDown(row, clearedRows);
+        }
+    }
 }
