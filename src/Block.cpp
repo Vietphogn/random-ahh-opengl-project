@@ -72,19 +72,17 @@ void Block::update()
 
 void Block::render()
 {
-    std::vector<glm::vec2> tiles = cells[rotationState];
+    std::vector<glm::vec2> tiles = getCellPositions();
     for (glm::vec2 &tile : tiles)
     {
-        tile.y += rowOffset;
-        tile.x += columnOffset; 
-        drawRectangle(tile.y * cellSize + 1, tile.x * cellSize + 1, cellSize - 1, cellSize - 1, colors[id]);
+        drawRectangle(tile.x * cellSize + 1, tile.y * cellSize + 1, cellSize - 1, cellSize - 1, colors[id]);
     }
 }
 
 void Block::move(int rows, int columns)
 {
-    rowOffset += rows;
-    columnOffset += columns;
+    rowOffset += columns;
+    columnOffset += rows;
 }
 
 void Block::rotate()
@@ -97,7 +95,7 @@ bool Block::isBlockOutside(const Grid &grid)
     std::vector<glm::vec2> tiles = cells[rotationState];
     for (glm::vec2 &tile : tiles)
     {
-        if (grid.isCellOutside(tile.y + rowOffset, tile.x + columnOffset))
+        if (grid.isCellOutside(tile.x + columnOffset, tile.y + rowOffset))
         {
             return true;
         }

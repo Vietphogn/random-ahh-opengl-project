@@ -93,7 +93,7 @@ bool Grid::isCellOutside(int column, int row) const
     return !(row >= 0 && row < numRows && column >= 0 && column < numColumns);
 }
 
-bool Grid::isCellEmpty(int column, int row) const
+bool Grid::isCellEmpty(int row, int column) const
 {
     return grid[row][column] == 0;
 }

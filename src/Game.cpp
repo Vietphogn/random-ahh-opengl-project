@@ -78,7 +78,7 @@ void Game::render()
 void Game::moveLeft()
 {
     currentBlock.move(-1, 0);
-    if (currentBlock.isBlockOutside(grid))
+    if (currentBlock.isBlockOutside(grid) || !blockFits())
     {
         currentBlock.move(1, 0);
     }
@@ -87,7 +87,7 @@ void Game::moveLeft()
 void Game::moveRight()
 {
     currentBlock.move(1, 0);
-    if (currentBlock.isBlockOutside(grid))
+    if (currentBlock.isBlockOutside(grid) || !blockFits())
     {
         currentBlock.move(-1, 0);
     }
@@ -98,7 +98,7 @@ void Game::lockBlock()
     std::vector<glm::vec2> tiles = currentBlock.getCellPositions();
     for (glm::vec2 &tile : tiles)
     {
-        grid.grid[int(tile.x)][int(tile.y)] = currentBlock.id;
+        grid.grid[int(tile.y)][int(tile.x)] = currentBlock.id;
     }
     currentBlock = nextBlock;
     nextBlock = getRandomBlock();
@@ -157,7 +157,7 @@ bool Game::blockFits()
 
     for (glm::vec2 &tile : tiles)
     {
-        if (!grid.isCellEmpty(tile.x, tile.y))
+        if (!grid.isCellEmpty((int)tile.y, (int)tile.x))
         {
             return false;
         }
